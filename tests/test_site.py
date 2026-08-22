@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "index.html"
 SOURCES = ROOT / "assets" / "data" / "sources.json"
 CSS = ROOT / "css" / "style.css"
+JS = ROOT / "js" / "main.js"
 
 REQUIRED_SECTIONS = {
     "overview",
@@ -56,10 +57,10 @@ class SiteParser(HTMLParser):
                 }
             )
 
-        if attributes.get("data-nav-toggle") is not None:
+        if "data-nav-toggle" in attributes:
             self.has_nav_toggle = True
 
-        if tag == "a" and attributes.get("data-demo-link") is not None:
+        if tag == "a" and "data-demo-link" in attributes:
             self.has_demo_anchor = True
 
         if tag == "a" and "resource-link" in attributes.get("class", "").split():
@@ -166,6 +167,17 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("@media", css)
         self.assertIn("prefers-reduced-motion", css)
         self.assertIn(":focus-visible", css)
+
+    def test_interactive_controls_have_accessible_fallbacks(self):
+        parser = SiteParser(self.read_index())
+        self.assertIn("citation-copy", parser.ids)
+        self.assertTrue(parser.has_demo_anchor)
+        self.assertTrue(parser.has_nav_toggle)
+
+    def test_script_is_deferred_and_local(self):
+        self.assertTrue(JS.exists(), "js/main.js must exist")
+        parser = SiteParser(self.read_index())
+        self.assertIn({"src": "./js/main.js", "defer": True}, parser.scripts)
 
 
 if __name__ == "__main__":

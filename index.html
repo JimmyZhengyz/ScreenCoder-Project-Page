@@ -10,7 +10,11 @@
     <header class="site-header">
       <nav class="site-nav" aria-label="Primary navigation">
         <a class="site-mark" href="#overview">ScreenCoder</a>
-        <div class="site-nav__links">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-links" data-nav-toggle>
+          <span class="nav-toggle__label">Menu</span>
+          <span class="nav-toggle__icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+        <div id="site-nav-links" class="site-nav__links">
           <a href="#motivation">Motivation</a>
           <a href="#method">Method</a>
           <a href="#results">Results</a>
@@ -152,7 +156,7 @@
             <p class="demo-placeholder__label">Public Hugging Face Space</p>
             <h3>Inspect the end-to-end workflow on real UI screenshots.</h3>
             <p>Upload an interface image, review the generated layout and webpage, then download the resulting code package.</p>
-            <a href="https://huggingface.co/spaces/Jimmyzheng-10/ScreenCoder">Open the Demo</a>
+            <a href="https://huggingface.co/spaces/Jimmyzheng-10/ScreenCoder" data-demo-link>Open the Demo</a>
           </div>
         </div>
       </section>
@@ -313,12 +317,16 @@
           <p class="eyebrow">Citation</p>
           <h2 id="citation-title">Reference the Paper</h2>
         </div>
-        <pre><code>@article{jiang2025screencoder,
+        <div class="citation-code">
+          <button id="citation-copy" class="citation-copy" type="button" aria-describedby="citation-status" data-copy-citation>Copy BibTeX</button>
+          <pre><code id="citation-code">@article{jiang2025screencoder,
   title   = {ScreenCoder: Advancing Visual-to-Code Generation for Front-End Automation via Modular Multimodal Agents},
   author  = {Jiang, Yilei and Zheng, Yaozhi and Wan, Yuxuan and Han, Jiaming and Wang, Qunzhong and Lyu, Michael R. and Yue, Xiangyu},
   journal = {arXiv preprint arXiv:2507.22827},
   year    = {2025}
 }</code></pre>
+          <span id="citation-status" class="citation-status" aria-live="polite"></span>
+        </div>
         <p>
           ScreenCoder builds on open research including UIED, DCGen, and
           Design2Code. See the paper and repository for complete references and
@@ -336,5 +344,6 @@
         <a href="https://huggingface.co/datasets/Leigest/ScreenCoder">ScreenBench</a>
       </div>
     </footer>
+    <script src="./js/main.js" defer></script>
   </body>
 </html>
