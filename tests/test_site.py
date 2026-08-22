@@ -1,4 +1,9 @@
 import json
+import os
+import re
+import signal
+import subprocess
+import tempfile
 import unittest
 from html.parser import HTMLParser
 from pathlib import Path
@@ -169,6 +174,66 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn(":focus-visible", css)
         self.assertRegex(css, r"body\s*\{[^}]*overflow-x:\s*clip")
         self.assertRegex(css, r"\.citation-code\s*\{[^}]*min-width:\s*0")
+
+    def test_wide_desktop_hero_title_does_not_overwhelm_the_first_screen(self):
+        chrome = Path("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
+        if not chrome.exists():
+            self.skipTest("Google Chrome is not installed")
+
+        probe = """
+<script>
+addEventListener("load", () => {
+  const title = document.querySelector(".hero h1");
+  document.documentElement.dataset.probeH1Height = String(Math.round(title.getBoundingClientRect().height));
+});
+</script>
+"""
+        html = self.read_index().replace("</body>", f"{probe}</body>")
+
+        with tempfile.TemporaryDirectory() as profile_dir:
+            probe_path = ROOT / ".hero-layout-probe.html"
+            try:
+                probe_path.write_text(html, encoding="utf-8")
+                process = subprocess.Popen(
+                    [
+                        str(chrome),
+                        "--headless=new",
+                        "--disable-gpu",
+                        "--disable-background-networking",
+                        "--disable-component-update",
+                        "--disable-crash-reporter",
+                        "--disable-logging",
+                        "--disable-breakpad",
+                        "--no-sandbox",
+                        "--no-first-run",
+                        "--no-default-browser-check",
+                        f"--user-data-dir={profile_dir}",
+                        "--window-size=1512,733",
+                        "--dump-dom",
+                        probe_path.as_uri(),
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.DEVNULL,
+                    text=True,
+                    start_new_session=True,
+                )
+                try:
+                    output, _ = process.communicate(timeout=8)
+                except subprocess.TimeoutExpired:
+                    os.killpg(process.pid, signal.SIGTERM)
+                    output, _ = process.communicate(timeout=3)
+            finally:
+                probe_path.unlink(missing_ok=True)
+
+        match = re.search(r'data-probe-h1-height="(\d+)"', output)
+        if match is None and process.returncode:
+            self.skipTest("Chrome headless layout probe is unavailable in this sandbox")
+        self.assertIsNotNone(match, "Chrome layout probe did not report the title height")
+        self.assertLessEqual(
+            int(match.group(1)),
+            520,
+            "At 1512px wide, the paper title should not become a nine-line 694px block",
+        )
 
     def test_interactive_controls_have_accessible_fallbacks(self):
         parser = SiteParser(self.read_index())
