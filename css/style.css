@@ -832,6 +832,33 @@ tbody td {
   gap: 1rem;
 }
 
+.error-page {
+  display: grid;
+  width: min(calc(100% - 3rem), 760px);
+  min-height: 100vh;
+  margin: 0 auto;
+  align-content: center;
+}
+
+.error-page h1 {
+  margin-bottom: 1.25rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.04;
+}
+
+.error-page > p:not(.eyebrow) {
+  max-width: 600px;
+  margin-bottom: 2rem;
+  color: var(--ink-soft);
+}
+
+.error-page .resource-link {
+  justify-self: start;
+}
+
 @media (max-width: 1040px) {
   .hero {
     grid-template-columns: 1fr;

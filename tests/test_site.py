@@ -179,6 +179,23 @@ class SiteContractTests(unittest.TestCase):
         parser = SiteParser(self.read_index())
         self.assertIn({"src": "./js/main.js", "defer": True}, parser.scripts)
 
+    def test_metadata_does_not_hardcode_a_future_host(self):
+        html = self.read_index()
+        self.assertIn('name="description"', html)
+        self.assertIn('property="og:title"', html)
+        self.assertIn('property="og:description"', html)
+        self.assertNotIn("github.io", html)
+
+    def test_local_preview_and_supporting_files_exist(self):
+        for relative_path in (
+            "README.md",
+            "scripts/serve.sh",
+            "404.html",
+            "favicon.svg",
+            "robots.txt",
+        ):
+            self.assertTrue((ROOT / relative_path).exists(), relative_path)
+
 
 if __name__ == "__main__":
     unittest.main()
