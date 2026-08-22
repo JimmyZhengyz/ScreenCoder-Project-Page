@@ -146,6 +146,27 @@ class SiteContractTests(unittest.TestCase):
             primary_urls,
         )
 
+    def test_all_local_assets_exist(self):
+        parser = SiteParser(self.read_index())
+        self.assertGreaterEqual(len(parser.images), 4)
+        for url in parser.local_urls:
+            clean_url = url.split("#", 1)[0].split("?", 1)[0]
+            path = ROOT / clean_url.removeprefix("./")
+            self.assertTrue(path.exists(), url)
+
+    def test_informative_images_have_alt_text(self):
+        parser = SiteParser(self.read_index())
+        self.assertGreaterEqual(len(parser.images), 4)
+        for image in parser.images:
+            self.assertTrue(image.get("alt", "").strip(), image)
+
+    def test_css_includes_accessible_responsive_contracts(self):
+        self.assertTrue(CSS.exists(), "css/style.css must exist")
+        css = CSS.read_text(encoding="utf-8")
+        self.assertIn("@media", css)
+        self.assertIn("prefers-reduced-motion", css)
+        self.assertIn(":focus-visible", css)
+
 
 if __name__ == "__main__":
     unittest.main()

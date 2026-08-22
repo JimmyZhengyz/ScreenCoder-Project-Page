@@ -26,6 +26,26 @@
       "verified": true
     }
   },
+  "public_assets": {
+    "teaser": {
+      "source": "https://github.com/leigest519/ScreenCoder/blob/e7c2caefa59c00e7a770b70cfda3eebc77b82f17/teaser.jpg",
+      "source_commit": "e7c2caefa59c00e7a770b70cfda3eebc77b82f17",
+      "local_path": "./assets/images/teaser.jpg",
+      "sha256": "f1ad7f30bd61689574333c507056689935b08b7695b7e050c2a99273bf868188"
+    },
+    "baseline_comparison": {
+      "source": "https://github.com/leigest519/ScreenCoder/blob/e7c2caefa59c00e7a770b70cfda3eebc77b82f17/example_others.jpeg",
+      "source_commit": "e7c2caefa59c00e7a770b70cfda3eebc77b82f17",
+      "local_path": "./assets/images/comparison-baselines.jpeg",
+      "sha256": "d4affe636e3c92b88a0f342ed196ef2dd97751001c6fbfc5154e004f79c36873"
+    },
+    "screencoder_comparison": {
+      "source": "https://github.com/leigest519/ScreenCoder/blob/e7c2caefa59c00e7a770b70cfda3eebc77b82f17/example_ours.jpeg",
+      "source_commit": "e7c2caefa59c00e7a770b70cfda3eebc77b82f17",
+      "local_path": "./assets/images/comparison-screencoder.jpeg",
+      "sha256": "4526c62c23a194e93aaf6847b336f47a69178c6d713a7c7e1659347850dd042c"
+    }
+  },
   "claim_notes": [
     {
       "id": "screenbench-agentic-block",

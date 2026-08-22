@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">ScreenCoder demo preview</title>
+  <desc id="desc">A stylized browser window showing an uploaded UI screenshot, a structured layout preview, and generated code.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#20294c"/>
+      <stop offset="1" stop-color="#4f5fb0"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffcf59"/>
+      <stop offset="1" stop-color="#ff8f70"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" rx="32" fill="url(#bg)"/>
+  <circle cx="1080" cy="80" r="180" fill="#7180d0" opacity=".22"/>
+  <circle cx="120" cy="690" r="250" fill="#17203e" opacity=".35"/>
+  <g transform="translate(80 72)">
+    <rect width="1040" height="576" rx="24" fill="#f8f9fd"/>
+    <rect width="1040" height="60" rx="24" fill="#fff"/>
+    <rect y="36" width="1040" height="24" fill="#fff"/>
+    <circle cx="32" cy="30" r="7" fill="#ff8f82"/>
+    <circle cx="56" cy="30" r="7" fill="#f7c75d"/>
+    <circle cx="80" cy="30" r="7" fill="#76ca8d"/>
+    <rect x="116" y="17" width="632" height="26" rx="13" fill="#f0f2f8"/>
+    <text x="132" y="35" fill="#7b849e" font-family="Inter, Arial, sans-serif" font-size="12">ScreenCoder · UI-to-Code Research Demo</text>
+
+    <g transform="translate(28 88)" font-family="Inter, Arial, sans-serif">
+      <text x="0" y="0" fill="#18203b" font-size="14" font-weight="700">INPUT SCREENSHOT</text>
+      <rect y="22" width="304" height="402" rx="16" fill="#fff" stroke="#dfe3ef"/>
+      <rect x="18" y="42" width="268" height="24" rx="7" fill="#e8ebf3"/>
+      <rect x="18" y="82" width="68" height="292" rx="10" fill="#d8def0"/>
+      <rect x="102" y="82" width="184" height="74" rx="10" fill="#ffd466"/>
+      <rect x="102" y="172" width="86" height="92" rx="10" fill="#91a6e7"/>
+      <rect x="200" y="172" width="86" height="92" rx="10" fill="#ff9678"/>
+      <rect x="102" y="280" width="184" height="94" rx="10" fill="#98cd82"/>
+      <rect x="40" y="391" width="224" height="5" rx="3" fill="#e7eaf3"/>
+
+      <text x="340" y="0" fill="#18203b" font-size="14" font-weight="700">STRUCTURED PLAN</text>
+      <rect x="340" y="22" width="304" height="402" rx="16" fill="#fff" stroke="#dfe3ef"/>
+      <rect x="362" y="48" width="260" height="48" rx="9" fill="#fff4cb" stroke="#f0c343"/>
+      <text x="382" y="78" fill="#765a00" font-size="13" font-weight="700">HEADER</text>
+      <rect x="362" y="114" width="76" height="260" rx="9" fill="#e8edff" stroke="#7e96df"/>
+      <text x="400" y="246" text-anchor="middle" fill="#435a9f" font-size="12" font-weight="700" transform="rotate(-90 400 246)">SIDEBAR</text>
+      <rect x="456" y="114" width="166" height="48" rx="9" fill="#e9f5e3" stroke="#82b86a"/>
+      <text x="476" y="144" fill="#4b7939" font-size="13" font-weight="700">NAVIGATION</text>
+      <rect x="456" y="180" width="166" height="194" rx="9" fill="#fff0eb" stroke="#ed967c"/>
+      <text x="476" y="212" fill="#9a4f39" font-size="13" font-weight="700">MAIN CONTENT</text>
+      <path d="M486 244h106M486 266h80M486 288h96M486 310h62" stroke="#f2b6a4" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="492" cy="399" r="5" fill="#7e96df"/>
+      <text x="508" y="404" fill="#7b849e" font-size="12">Interpretable layout tree</text>
+
+      <text x="680" y="0" fill="#18203b" font-size="14" font-weight="700">GENERATED CODE</text>
+      <rect x="680" y="22" width="304" height="402" rx="16" fill="#1a213a"/>
+      <g fill="none" stroke-linecap="round" stroke-width="7">
+        <path d="M704 56h92" stroke="#ff9e87"/>
+        <path d="M724 82h132" stroke="#c5ceff"/>
+        <path d="M744 108h188" stroke="#8fd6a3"/>
+        <path d="M744 134h140" stroke="#f6cf70"/>
+        <path d="M724 160h118" stroke="#c5ceff"/>
+        <path d="M744 186h172" stroke="#8fd6a3"/>
+        <path d="M764 212h132" stroke="#ff9e87"/>
+        <path d="M764 238h166" stroke="#c5ceff"/>
+        <path d="M744 264h112" stroke="#f6cf70"/>
+        <path d="M724 290h190" stroke="#8fd6a3"/>
+        <path d="M744 316h150" stroke="#c5ceff"/>
+        <path d="M704 342h98" stroke="#ff9e87"/>
+      </g>
+      <rect x="704" y="382" width="256" height="3" rx="2" fill="#333c5d"/>
+      <rect x="704" y="398" width="172" height="8" rx="4" fill="url(#accent)"/>
+    </g>
+  </g>
+  <g transform="translate(472 662)" font-family="Inter, Arial, sans-serif">
+    <circle cx="20" cy="0" r="20" fill="#fff" opacity=".96"/>
+    <path d="M15-9l16 9-16 9z" fill="#38467e"/>
+    <text x="54" y="7" fill="#fff" font-size="18" font-weight="700">Open the public research demo</text>
+  </g>
+</svg>
