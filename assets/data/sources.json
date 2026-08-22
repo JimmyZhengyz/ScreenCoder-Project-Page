@@ -1,0 +1,41 @@
+{
+  "canonical_sources": {
+    "paper": {
+      "label": "Paper",
+      "url": "https://arxiv.org/abs/2507.22827",
+      "verified": true
+    },
+    "code": {
+      "label": "Code",
+      "url": "https://github.com/leigest519/ScreenCoder",
+      "verified": true
+    },
+    "demo": {
+      "label": "Demo",
+      "url": "https://huggingface.co/spaces/Jimmyzheng-10/ScreenCoder",
+      "verified": true
+    },
+    "dataset": {
+      "label": "ScreenBench",
+      "url": "https://huggingface.co/datasets/Leigest/ScreenCoder",
+      "verified": true
+    },
+    "hf_paper": {
+      "label": "Hugging Face Paper",
+      "url": "https://huggingface.co/papers/2507.22827",
+      "verified": true
+    }
+  },
+  "claim_notes": [
+    {
+      "id": "screenbench-agentic-block",
+      "verified": false,
+      "note": "The arXiv v2 prose names 0.755 as Block, while Table 1 places 0.768 in the Block column and 0.755 in Position. Do not promote either value as a headline metric before author confirmation."
+    },
+    {
+      "id": "screenbench-repository-id",
+      "verified": false,
+      "note": "The public dataset page is Leigest/ScreenCoder, while a Dataset Card snippet mentions leigest519/ScreenBench. Link to the verified public page and avoid reproducing the inconsistent snippet."
+    }
+  ]
+}
