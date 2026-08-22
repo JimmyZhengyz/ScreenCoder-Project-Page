@@ -1,26 +1,28 @@
 # ScreenCoder 静态项目页设计规格
 
 日期：2026-08-22  
-状态：等待用户审核  
+状态：已根据论文项目定位修订，等待用户复核
 站点语言：英文  
 内部设计文档语言：中文
 
 ## 1. 项目目标
 
-为 ScreenCoder 建立一个单页、纯静态、适合 GitHub Pages 的研究项目网站。网站面向研究者、开发者和希望体验 UI-to-Code 工作流的普通访客，统一连接论文、代码、在线 Demo 和数据集。
+为 ScreenCoder 建立一个单页、纯静态、适合 GitHub Pages 的论文项目主页。网站首先服务研究者、审稿人和相关方向的开发者，准确呈现论文问题、方法、实验与公开资源；在线 Demo 是论文方法能力和实际可用性的展示证据，而不是产品转化入口。
 
 首版不在页面内执行模型推理，不嵌入 Hugging Face Space，也不依赖数据库、服务端 API 或运行时密钥。页面以轻量预览展示能力，并通过明确按钮跳转到现有公开资源。
 
-## 2. 已确认的产品决定
+## 2. 已确认的项目定位与设计决定
 
-- 定位：研究项目页与产品 Demo 的混合形态。
+- 定位：论文项目主页，辅以质量较高的交互 Demo 和定性展示。
 - 语言：英文。
 - 形态：单页静态网站。
-- 在线体验：展示视频或图片预览，跳转至 Hugging Face Space。
+- 在线体验：作为论文方法的补充证据，展示视频或图片预览并跳转至 Hugging Face Space。
 - 内容范围：方法、结果、定性案例、数据集、代码、论文、引用和致谢。
 - 开发方式：先在没有 remote 的本地 Git staging 仓库中开发和审核。
 - 部署方式：最终使用 GitHub Pages 的 `github.io` 项目站点。
 - 部署所有者：本阶段有意延后决定；可选择 `leigest519` 或其他获得授权的 GitHub 账号。
+
+页面不是产品 landing page，不设置注册、定价、客户案例、营销式 CTA、等待列表或商业转化漏斗。视觉设计可以现代且有吸引力，但所有视觉层级必须服务论文贡献、方法解释和实验结论。
 
 ## 3. 公开事实基线
 
@@ -88,8 +90,8 @@ https://<other-owner>.github.io/<other-repository>/
 
 - ScreenCoder 正式论文标题。
 - arXiv v2 作者顺序与机构。
-- 一句话价值主张。
-- Paper、Code、Live Demo、Dataset 四个主按钮。
+- 一句话论文贡献概述。
+- Paper 与 Code 为主要入口，Demo 与 Dataset 为辅助入口。
 - 官方 teaser 或从论文 Figure 1 导出的高分辨率主视觉。
 
 ### 7.2 Motivation
@@ -114,11 +116,11 @@ UI Screenshot / Design Sketch
 
 每一步提供一句主解释和一段可展开的技术说明。方法图优先使用可缩放 SVG 重绘，保留论文原始语义和标注。
 
-### 7.4 Live Demo
+### 7.4 Demo and Qualitative Showcase
 
 - 展示公开仓库中的 YouTube、Instagram 和 Design Draft 演示。
 - 使用静态 poster 和用户点击后加载的视频，避免首屏加载大文件。
-- 提供跳转 Hugging Face Space 的主按钮。
+- 提供跳转 Hugging Face Space 的明确入口，但其视觉权重低于 Paper 和 Code。
 - Space 不可用时，静态页面仍完整可阅读。
 
 ### 7.5 Results
@@ -153,9 +155,11 @@ UI Screenshot / Design Sketch
 
 ## 8. 视觉方向
 
-采用现代研究项目页风格：浅色背景、深色正文、蓝紫色强调色、宽内容区和清晰的论文式层级。
+采用现代论文项目页风格：浅色背景、深色正文、蓝紫色强调色、宽内容区和清晰的学术信息层级。
 
 - 首屏重点是 teaser，不使用复杂 3D 或 WebGL。
+- 论文标题、作者、机构、Paper 和 Code 的视觉优先级高于 Demo。
+- 文案采用可验证的研究表述，避免 `revolutionary`、`production-ready`、`best-in-class` 等营销措辞，除非它们是有明确证据支持的论文原文且确有必要。
 - 动效仅用于 section 出现、方法流程和 gallery 切换。
 - 尊重 `prefers-reduced-motion`。
 - 正文字体与代码字体分离。
@@ -220,6 +224,7 @@ ScreenCoder-Project-Page/
 
 ### 内容验收
 
+- 页面首屏可以被明确识别为论文项目主页，而不是产品主页。
 - 标题、作者、机构和 BibTeX 与 arXiv v2 一致。
 - 所有结果数字都有公开来源和核对记录。
 - Code、Paper、Demo、Dataset 链接可访问。
@@ -275,4 +280,3 @@ ScreenCoder-Project-Page/
 - 已确认 teaser、视频和对比图可按其许可证用于项目页。
 - 最终站点不包含秘密信息或内部材料。
 - GitHub Pages 子路径部署测试通过。
-
