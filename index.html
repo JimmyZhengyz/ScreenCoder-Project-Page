@@ -3,62 +3,323 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ScreenCoder — Paper Project Page</title>
+    <title>ScreenCoder — Modular Multimodal Agents for UI-to-Code</title>
   </head>
   <body>
-    <header>
-      <nav aria-label="Primary navigation">
-        <a href="#overview">ScreenCoder</a>
-        <a href="#method">Method</a>
-        <a href="#results">Results</a>
-        <a href="#citation">Citation</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="site-mark" href="#overview">ScreenCoder</a>
+        <div class="site-nav__links">
+          <a href="#motivation">Motivation</a>
+          <a href="#method">Method</a>
+          <a href="#results">Results</a>
+          <a href="#demo">Demo</a>
+          <a href="#citation">Citation</a>
+        </div>
       </nav>
     </header>
 
     <main>
-      <section id="overview" aria-labelledby="paper-title">
-        <p>Research project · arXiv:2507.22827</p>
-        <h1 id="paper-title">ScreenCoder: Advancing Visual-to-Code Generation for Front-End Automation via Modular Multimodal Agents</h1>
-        <p>
-          Yilei Jiang, Yaozhi Zheng, Yuxuan Wan, Jiaming Han,
-          Qunzhong Wang, Michael R. Lyu, and Xiangyu Yue
-        </p>
-        <p>CUHK MMLab &amp; ARISE Lab</p>
-        <div aria-label="Project resources">
-          <a href="https://arxiv.org/abs/2507.22827">Paper</a>
-          <a href="https://github.com/leigest519/ScreenCoder">Code</a>
-          <a href="https://huggingface.co/spaces/Jimmyzheng-10/ScreenCoder">Demo</a>
-          <a href="https://huggingface.co/datasets/Leigest/ScreenCoder">Dataset</a>
+      <section id="overview" class="hero" aria-labelledby="paper-title">
+        <div class="hero__content">
+          <p class="eyebrow">Research project · arXiv:2507.22827</p>
+          <h1 id="paper-title">ScreenCoder: Advancing Visual-to-Code Generation for Front-End Automation via Modular Multimodal Agents</h1>
+          <p class="hero__summary">
+            A modular multi-agent framework that separates visual grounding,
+            structural planning, and code generation to produce faithful and
+            interpretable front-end implementations from UI screenshots and
+            design sketches.
+          </p>
+          <p class="authors">
+            <span>Yilei Jiang<sup>*</sup></span>
+            <span>Yaozhi Zheng<sup>*</sup></span>
+            <span>Yuxuan Wan<sup>*</sup></span>
+            <span>Jiaming Han</span>
+            <span>Qunzhong Wang</span>
+            <span>Michael R. Lyu</span>
+            <span>Xiangyu Yue<sup>†</sup></span>
+          </p>
+          <p class="affiliations">CUHK MMLab &amp; ARISE Lab</p>
+          <p class="author-note"><sup>*</sup> Equal contribution · <sup>†</sup> Corresponding author</p>
+          <div class="resource-links" aria-label="Project resources">
+            <a class="resource-link resource-link--primary" href="https://arxiv.org/abs/2507.22827">Paper</a>
+            <a class="resource-link resource-link--primary" href="https://github.com/leigest519/ScreenCoder">Code</a>
+            <a class="resource-link" href="https://huggingface.co/spaces/Jimmyzheng-10/ScreenCoder">Demo</a>
+            <a class="resource-link" href="https://huggingface.co/datasets/Leigest/ScreenCoder">Dataset</a>
+          </div>
+        </div>
+        <div class="hero__visual" aria-label="Teaser placeholder">
+          <p>UI screenshot or design sketch</p>
+          <span aria-hidden="true">→</span>
+          <p>Structured, executable HTML/CSS</p>
         </div>
       </section>
 
-      <section id="motivation" aria-labelledby="motivation-title">
-        <h2 id="motivation-title">Why UI-to-Code Needs Structure</h2>
+      <section id="motivation" class="section" aria-labelledby="motivation-title">
+        <div class="section-heading">
+          <p class="eyebrow">Motivation</p>
+          <h2 id="motivation-title">Why UI-to-Code Needs Structure</h2>
+          <p>
+            End-to-end multimodal models must perceive fine visual details,
+            reason about nested layouts, and synthesize valid front-end code at
+            once. ScreenCoder begins from two recurring failure modes observed
+            in this monolithic setting.
+          </p>
+        </div>
+        <div class="failure-grid">
+          <article class="failure-card">
+            <p class="card-index">01</p>
+            <h3>Perception Errors</h3>
+            <p>
+              Small elements are omitted, text or colors are distorted, and
+              interface components are assigned the wrong semantic roles.
+            </p>
+          </article>
+          <article class="failure-card">
+            <p class="card-index">02</p>
+            <h3>Planning Errors</h3>
+            <p>
+              Correctly perceived elements are still misplaced or assembled
+              into flat structures that do not reflect a coherent DOM hierarchy.
+            </p>
+          </article>
+        </div>
       </section>
 
-      <section id="method" aria-labelledby="method-title">
-        <h2 id="method-title">Method</h2>
+      <section id="method" class="section section--tinted" aria-labelledby="method-title">
+        <div class="section-heading">
+          <p class="eyebrow">Method</p>
+          <h2 id="method-title">A Modular Path from Pixels to Code</h2>
+          <p>
+            ScreenCoder assigns perception, structural reasoning, and synthesis
+            to specialized stages, then restores visual assets through explicit
+            placeholder matching.
+          </p>
+        </div>
+        <ol class="method-flow">
+          <li class="method-step">
+            <span class="method-step__number">1</span>
+            <div>
+              <h3>Grounding Agent</h3>
+              <p>Locates and labels major UI regions such as headers, navigation, sidebars, and content, providing a semantic spatial map.</p>
+            </div>
+          </li>
+          <li class="method-step">
+            <span class="method-step__number">2</span>
+            <div>
+              <h3>Planning Agent</h3>
+              <p>Converts grounded regions into a hierarchical, DOM-like layout tree using front-end engineering priors.</p>
+            </div>
+          </li>
+          <li class="method-step">
+            <span class="method-step__number">3</span>
+            <div>
+              <h3>Generation Agent</h3>
+              <p>Generates executable HTML and CSS from the layout tree, semantic context, and optional design instructions.</p>
+            </div>
+          </li>
+          <li class="method-step">
+            <span class="method-step__number">4</span>
+            <div>
+              <h3>Placeholder Mapping</h3>
+              <p>Matches detected visual assets to generated placeholders and restores image patches with optimal assignment.</p>
+            </div>
+          </li>
+        </ol>
       </section>
 
-      <section id="demo" aria-labelledby="demo-title">
-        <h2 id="demo-title">Demo</h2>
+      <section id="demo" class="section" aria-labelledby="demo-title">
+        <div class="section-heading section-heading--split">
+          <div>
+            <p class="eyebrow">Interactive evidence</p>
+            <h2 id="demo-title">From Research Pipeline to Working Demo</h2>
+          </div>
+          <p>
+            The public demo exposes the full screenshot-to-code workflow and
+            supports examples ranging from familiar websites to rough design
+            drafts. This project page stays static and links to the hosted system.
+          </p>
+        </div>
+        <div class="demo-placeholder">
+          <div>
+            <p class="demo-placeholder__label">Public Hugging Face Space</p>
+            <h3>Upload a UI image, inspect the generated layout, and download the resulting code.</h3>
+          </div>
+          <a href="https://huggingface.co/spaces/Jimmyzheng-10/ScreenCoder">Open the Demo</a>
+        </div>
       </section>
 
-      <section id="results" aria-labelledby="results-title">
-        <h2 id="results-title">Results</h2>
+      <section id="results" class="section section--dark" aria-labelledby="results-title">
+        <div class="section-heading">
+          <p class="eyebrow">Experiments</p>
+          <h2 id="results-title">Evidence across ScreenBench and Design2Code</h2>
+          <p>
+            The paper evaluates block, text, position, and color consistency
+            alongside CLIP similarity. Values below are reproduced from arXiv
+            v2 tables; the full paper remains the authoritative source.
+          </p>
+        </div>
+
+        <div class="table-block">
+          <div class="table-block__heading">
+            <h3>Selected main results</h3>
+            <a href="https://arxiv.org/abs/2507.22827">See full Table 1</a>
+          </div>
+          <div class="table-scroll" tabindex="0" aria-label="Selected main results table, horizontally scrollable">
+            <table>
+              <caption>Selected automatic evaluation results from ScreenCoder arXiv v2.</caption>
+              <thead>
+                <tr>
+                  <th rowspan="2" scope="col">Model</th>
+                  <th colspan="5" scope="colgroup">ScreenBench</th>
+                  <th colspan="5" scope="colgroup">Design2Code</th>
+                </tr>
+                <tr>
+                  <th scope="col">Block</th><th scope="col">Text</th><th scope="col">Position</th><th scope="col">Color</th><th scope="col">CLIP</th>
+                  <th scope="col">Block</th><th scope="col">Text</th><th scope="col">Position</th><th scope="col">Color</th><th scope="col">CLIP</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">GPT-4o</th>
+                  <td>0.745</td><td>0.835</td><td>0.725</td><td>0.702</td><td>0.775</td>
+                  <td>0.845</td><td>0.962</td><td>0.903</td><td>0.881</td><td>0.917</td>
+                </tr>
+                <tr class="table-highlight">
+                  <th scope="row">ScreenCoder (Agentic)</th>
+                  <td>0.768</td><td>0.857</td><td>0.755</td><td>0.734</td><td>0.812</td>
+                  <td>0.865</td><td>0.975</td><td>0.925</td><td>0.908</td><td>0.922</td>
+                </tr>
+                <tr>
+                  <th scope="row">ScreenCoder (Finetuned)</th>
+                  <td>0.758</td><td>0.841</td><td>0.742</td><td>0.718</td><td>0.791</td>
+                  <td>0.849</td><td>0.968</td><td>0.913</td><td>0.886</td><td>0.915</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="evidence-note">
+            Source note: arXiv v2 prose refers to 0.755 as a Block score,
+            while Table 1 places 0.768 under Block and 0.755 under Position.
+            This page preserves the table layout and does not promote either
+            value as a standalone headline claim.
+          </p>
+        </div>
+
+        <div class="table-block">
+          <div class="table-block__heading">
+            <h3>Dual-stage post-training</h3>
+            <p>Qwen2.5-VL → SFT → RL</p>
+          </div>
+          <div class="table-scroll" tabindex="0" aria-label="Post-training ablation table, horizontally scrollable">
+            <table>
+              <caption>Effect of supervised fine-tuning and reinforcement learning.</caption>
+              <thead>
+                <tr>
+                  <th rowspan="2" scope="col">Training stage</th>
+                  <th colspan="5" scope="colgroup">ScreenBench</th>
+                  <th colspan="5" scope="colgroup">Design2Code</th>
+                </tr>
+                <tr>
+                  <th scope="col">Block</th><th scope="col">Text</th><th scope="col">Position</th><th scope="col">Color</th><th scope="col">CLIP</th>
+                  <th scope="col">Block</th><th scope="col">Text</th><th scope="col">Position</th><th scope="col">Color</th><th scope="col">CLIP</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Base model</th>
+                  <td>0.723</td><td>0.828</td><td>0.613</td><td>0.632</td><td>0.762</td>
+                  <td>0.822</td><td>0.951</td><td>0.815</td><td>0.831</td><td>0.893</td>
+                </tr>
+                <tr>
+                  <th scope="row">+ SFT</th>
+                  <td>0.741</td><td>0.835</td><td>0.705</td><td>0.681</td><td>0.784</td>
+                  <td>0.842</td><td>0.963</td><td>0.890</td><td>0.870</td><td>0.908</td>
+                </tr>
+                <tr class="table-highlight">
+                  <th scope="row">+ RL (Final)</th>
+                  <td>0.758</td><td>0.841</td><td>0.742</td><td>0.718</td><td>0.791</td>
+                  <td>0.849</td><td>0.968</td><td>0.913</td><td>0.886</td><td>0.915</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="human-eval" aria-label="Human evaluation summary">
+          <article><strong>65%</strong><span>ScreenCoder preferred over GPT-4o in pairwise visual fidelity</span></article>
+          <article><strong>2.2×</strong><span>Faster average completion in the workflow usefulness study</span></article>
+          <article><strong>4.6/5</strong><span>Average UI similarity score with ScreenCoder-assisted workflows</span></article>
+        </div>
       </section>
 
-      <section id="data" aria-labelledby="data-title">
-        <h2 id="data-title">Data Engine</h2>
+      <section id="data" class="section" aria-labelledby="data-title">
+        <div class="section-heading">
+          <p class="eyebrow">Data engine</p>
+          <h2 id="data-title">From a Modular System to Model Post-Training</h2>
+          <p>
+            Beyond inference, ScreenCoder is used to curate clean image-code
+            pairs and improve an open-source multimodal model through supervised
+            fine-tuning and reinforcement learning.
+          </p>
+        </div>
+        <div class="data-flow">
+          <article><strong>50K</strong><span>initially collected webpages</span></article>
+          <article><strong>10K</strong><span>curated Screen-10K pairs</span></article>
+          <article><strong>9K</strong><span>pairs for supervised fine-tuning</span></article>
+          <article><strong>1K</strong><span>pairs for reinforcement learning</span></article>
+        </div>
+        <div class="dataset-note">
+          <h3>ScreenBench</h3>
+          <p>A benchmark of 1,000 contemporary webpage screenshot and HTML pairs for evaluating modern UI-to-code systems.</p>
+          <a href="https://huggingface.co/datasets/Leigest/ScreenCoder">View the public dataset</a>
+        </div>
       </section>
 
-      <section id="gallery" aria-labelledby="gallery-title">
-        <h2 id="gallery-title">Qualitative Results</h2>
+      <section id="gallery" class="section section--tinted" aria-labelledby="gallery-title">
+        <div class="section-heading">
+          <p class="eyebrow">Qualitative analysis</p>
+          <h2 id="gallery-title">Structure Is Visible in the Output</h2>
+          <p>
+            The paper compares source screenshots, end-to-end baselines, and
+            ScreenCoder outputs across diverse layouts. Public project assets
+            populate this gallery in the visual implementation stage.
+          </p>
+        </div>
+        <div class="gallery-placeholder" role="group" aria-label="Qualitative comparison placeholder">
+          <article><span>01</span><h3>Source UI</h3><p>The visual target and its nested layout.</p></article>
+          <article><span>02</span><h3>End-to-end baseline</h3><p>Common perception and planning failures.</p></article>
+          <article><span>03</span><h3>ScreenCoder</h3><p>A structured, high-fidelity reconstruction.</p></article>
+        </div>
       </section>
 
-      <section id="citation" aria-labelledby="citation-title">
-        <h2 id="citation-title">Citation</h2>
+      <section id="citation" class="section citation" aria-labelledby="citation-title">
+        <div class="section-heading">
+          <p class="eyebrow">Citation</p>
+          <h2 id="citation-title">Reference the Paper</h2>
+        </div>
+        <pre><code>@article{jiang2025screencoder,
+  title   = {ScreenCoder: Advancing Visual-to-Code Generation for Front-End Automation via Modular Multimodal Agents},
+  author  = {Jiang, Yilei and Zheng, Yaozhi and Wan, Yuxuan and Han, Jiaming and Wang, Qunzhong and Lyu, Michael R. and Yue, Xiangyu},
+  journal = {arXiv preprint arXiv:2507.22827},
+  year    = {2025}
+}</code></pre>
+        <p>
+          ScreenCoder builds on open research including UIED, DCGen, and
+          Design2Code. See the paper and repository for complete references and
+          acknowledgements.
+        </p>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <p>ScreenCoder · CUHK MMLab &amp; ARISE Lab</p>
+      <div>
+        <a href="https://arxiv.org/abs/2507.22827">Paper</a>
+        <a href="https://github.com/leigest519/ScreenCoder">Code</a>
+        <a href="https://huggingface.co/spaces/Jimmyzheng-10/ScreenCoder">Demo</a>
+        <a href="https://huggingface.co/datasets/Leigest/ScreenCoder">ScreenBench</a>
+      </div>
+    </footer>
   </body>
 </html>

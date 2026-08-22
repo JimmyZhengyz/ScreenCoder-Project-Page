@@ -31,6 +31,7 @@ class SiteParser(HTMLParser):
         self.external_urls = []
         self.images = []
         self.scripts = []
+        self.resource_links = []
         self.table_count = 0
         self.has_demo_anchor = False
         self.has_nav_toggle = False
@@ -60,6 +61,9 @@ class SiteParser(HTMLParser):
 
         if tag == "a" and attributes.get("data-demo-link") is not None:
             self.has_demo_anchor = True
+
+        if tag == "a" and "resource-link" in attributes.get("class", "").split():
+            self.resource_links.append(attributes)
 
         for name in ("href", "src", "poster"):
             url = attributes.get(name)
@@ -104,6 +108,43 @@ class SiteContractTests(unittest.TestCase):
         for source in sources["canonical_sources"].values():
             self.assertTrue(source["url"].startswith("https://"))
             self.assertIsInstance(source["verified"], bool)
+
+    def test_method_pipeline_is_complete(self):
+        html = self.read_index()
+        for stage in (
+            "Grounding Agent",
+            "Planning Agent",
+            "Generation Agent",
+            "Placeholder Mapping",
+        ):
+            self.assertIn(stage, html)
+
+    def test_results_use_evidence_tables_without_an_unverified_headline(self):
+        parser = SiteParser(self.read_index())
+        self.assertGreaterEqual(parser.table_count, 2)
+        self.assertNotIn('data-metric="screenbench-block"', parser.raw_html)
+        self.assertIn("ScreenBench", parser.raw_html)
+        self.assertIn("Design2Code", parser.raw_html)
+
+    def test_bibtex_is_present(self):
+        html = self.read_index()
+        self.assertIn("@article{jiang2025screencoder", html)
+        self.assertIn("arXiv:2507.22827", html)
+
+    def test_paper_and_code_are_the_primary_hero_resources(self):
+        parser = SiteParser(self.read_index())
+        primary_urls = {
+            link["href"]
+            for link in parser.resource_links
+            if "resource-link--primary" in link.get("class", "").split()
+        }
+        self.assertEqual(
+            {
+                "https://arxiv.org/abs/2507.22827",
+                "https://github.com/leigest519/ScreenCoder",
+            },
+            primary_urls,
+        )
 
 
 if __name__ == "__main__":
