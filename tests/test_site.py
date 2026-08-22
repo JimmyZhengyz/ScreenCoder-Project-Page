@@ -167,6 +167,8 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("@media", css)
         self.assertIn("prefers-reduced-motion", css)
         self.assertIn(":focus-visible", css)
+        self.assertRegex(css, r"body\s*\{[^}]*overflow-x:\s*clip")
+        self.assertRegex(css, r"\.citation-code\s*\{[^}]*min-width:\s*0")
 
     def test_interactive_controls_have_accessible_fallbacks(self):
         parser = SiteParser(self.read_index())
