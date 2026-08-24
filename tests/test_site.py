@@ -176,7 +176,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertRegex(css, r"body\s*\{[^}]*overflow-x:\s*clip")
         self.assertRegex(css, r"\.citation-code\s*\{[^}]*min-width:\s*0")
 
-    def test_wide_desktop_hero_title_does_not_overwhelm_the_first_screen(self):
+    def test_wide_desktop_hero_places_a_large_teaser_below_the_project_intro(self):
         if not CHROME.exists():
             self.skipTest("Google Chrome is not installed")
 
@@ -184,9 +184,19 @@ class SiteContractTests(unittest.TestCase):
 <script>
 addEventListener("load", () => {
   const title = document.querySelector(".hero h1");
+  const content = document.querySelector(".hero__content");
   const visual = document.querySelector(".hero__visual");
+  const atmosphere = document.querySelector(".hero-atmosphere");
   document.documentElement.dataset.probeH1Height = String(Math.round(title.getBoundingClientRect().height));
+  document.documentElement.dataset.probeContentBottom = String(Math.round(content.getBoundingClientRect().bottom));
   document.documentElement.dataset.probeVisualTop = String(Math.round(visual.getBoundingClientRect().top));
+  document.documentElement.dataset.probeVisualWidth = String(Math.round(visual.getBoundingClientRect().width));
+  document.documentElement.dataset.probeTextAlign = getComputedStyle(content).textAlign;
+  document.documentElement.dataset.probeAtmosphereHidden = String(atmosphere?.getAttribute("aria-hidden") === "true");
+  document.documentElement.dataset.probeAtmosphereParts = String(atmosphere?.children.length || 0);
+  document.documentElement.dataset.probeAtmosphereAnimation = atmosphere
+    ? [...atmosphere.children].map((part) => getComputedStyle(part).animationName).join(",")
+    : "none";
 });
 </script>
 """
@@ -210,7 +220,7 @@ addEventListener("load", () => {
                         "--no-first-run",
                         "--no-default-browser-check",
                         f"--user-data-dir={profile_dir}",
-                        "--window-size=1350,768",
+                        "--window-size=1512,900",
                         "--dump-dom",
                         probe_path.as_uri(),
                     ],
@@ -228,21 +238,38 @@ addEventListener("load", () => {
                 probe_path.unlink(missing_ok=True)
 
         match = re.search(r'data-probe-h1-height="(\d+)"', output)
+        content_bottom = re.search(r'data-probe-content-bottom="(\d+)"', output)
         visual_top = re.search(r'data-probe-visual-top="(\d+)"', output)
+        visual_width = re.search(r'data-probe-visual-width="(\d+)"', output)
+        text_align = re.search(r'data-probe-text-align="([^"]*)"', output)
+        atmosphere_hidden = re.search(r'data-probe-atmosphere-hidden="(true|false)"', output)
+        atmosphere_parts = re.search(r'data-probe-atmosphere-parts="(\d+)"', output)
+        atmosphere_animation = re.search(r'data-probe-atmosphere-animation="([^"]*)"', output)
         if match is None and process.returncode:
             self.skipTest("Chrome headless layout probe is unavailable in this sandbox")
         self.assertIsNotNone(match, "Chrome layout probe did not report the title height")
+        self.assertIsNotNone(content_bottom, "Chrome layout probe did not report the intro boundary")
         self.assertIsNotNone(visual_top, "Chrome layout probe did not report the teaser position")
+        self.assertIsNotNone(visual_width, "Chrome layout probe did not report the teaser width")
         self.assertLessEqual(
             int(match.group(1)),
-            340,
-            "At 1350px wide, the paper title should stay within roughly five readable lines",
+            285,
+            "At 1512px wide, the centered paper title should remain concise and readable",
         )
-        self.assertLessEqual(
+        self.assertGreaterEqual(
             int(visual_top.group(1)),
-            390,
-            "At 1350px wide, the teaser should begin in the upper half of the first screen",
+            int(content_bottom.group(1)) + 40,
+            "The teaser must begin below the complete project introduction, not beside it",
         )
+        self.assertGreaterEqual(
+            int(visual_width.group(1)),
+            1000,
+            "The below-title teaser should be a large visual centerpiece",
+        )
+        self.assertEqual("center", text_align.group(1))
+        self.assertEqual("true", atmosphere_hidden.group(1))
+        self.assertGreaterEqual(int(atmosphere_parts.group(1)), 3)
+        self.assertNotEqual("none", atmosphere_animation.group(1))
 
     def test_scrolled_results_table_keeps_model_column_above_metric_columns(self):
         if not CHROME.exists():
