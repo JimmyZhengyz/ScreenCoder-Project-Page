@@ -46,6 +46,44 @@
       "sha256": "4526c62c23a194e93aaf6847b336f47a69178c6d713a7c7e1659347850dd042c"
     }
   },
+  "qualitative_cases": {
+    "source": "https://export.arxiv.org/e-print/2507.22827",
+    "source_version": "arXiv:2507.22827v2",
+    "source_archive_sha256": "62c520aedb3f7413d949995d07b80b3326ee26c7ff855dbd8ba120d7836faae6",
+    "derivation": "Rendered at 144 DPI from the official appendix PDFs and cropped to the source, named baseline, and ScreenCoder viewport regions without altering their content.",
+    "cases": {
+      "01": {
+        "label": "Amazon Customer Service",
+        "source_figures": ["appendix_figure/a1.pdf", "appendix_figure/a2.pdf"],
+        "baseline_model": "Gemini-2.5-pro",
+        "assets": {
+          "source": {"path": "./assets/images/qualitative/case-01-source.png", "sha256": "b48fb5462c5f519c6b2b0ec28027bb873d20561dc1e344a00fbde25dd743d1c3"},
+          "baseline": {"path": "./assets/images/qualitative/case-01-baseline.png", "sha256": "68a3aa50dbd3775c2d18b2b73e08070b7a25bb52b2ec255464187e1ce9718ed8"},
+          "screencoder": {"path": "./assets/images/qualitative/case-01-screencoder.png", "sha256": "b552dd5858764241fa0e7861640a2d23f7fb53f9ca86b6444b3a0aebdd253468"}
+        }
+      },
+      "02": {
+        "label": "Bing Search Results",
+        "source_figures": ["appendix_figure/b1.pdf", "appendix_figure/b2.pdf"],
+        "baseline_model": "GPT-4o",
+        "assets": {
+          "source": {"path": "./assets/images/qualitative/case-02-source.png", "sha256": "dd7a495a64e7eb1216e1298c6359690dfdc3da3577e34508a345d2c449f469b2"},
+          "baseline": {"path": "./assets/images/qualitative/case-02-baseline.png", "sha256": "1c4981ff5600d896a1f37382c170ff1919e779d74878a412173749c9baa65f11"},
+          "screencoder": {"path": "./assets/images/qualitative/case-02-screencoder.png", "sha256": "1ded7fac25fc23205bd4259764b08269a65e3afba12cae7b57fe4a412e091697"}
+        }
+      },
+      "03": {
+        "label": "GitHub Profile",
+        "source_figures": ["appendix_figure/g1.pdf", "appendix_figure/g2.pdf"],
+        "baseline_model": "GPT-4o",
+        "assets": {
+          "source": {"path": "./assets/images/qualitative/case-03-source.png", "sha256": "d830d0b68cfa562f6e676bcd9c09310a89c969a0ac50e51ecfa51698a153a5c6"},
+          "baseline": {"path": "./assets/images/qualitative/case-03-baseline.png", "sha256": "4608d702a92c443830c67c200ea4503a69de7d9213feb6e36ad8a513d408ff0d"},
+          "screencoder": {"path": "./assets/images/qualitative/case-03-screencoder.png", "sha256": "9e0b703a461120dd096de377d3a17051b0bb749ec80f6415c2d8112a2165bd91"}
+        }
+      }
+    }
+  },
   "claim_notes": [
     {
       "id": "screenbench-agentic-block",

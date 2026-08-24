@@ -15,6 +15,7 @@ INDEX = ROOT / "index.html"
 SOURCES = ROOT / "assets" / "data" / "sources.json"
 CSS = ROOT / "css" / "style.css"
 JS = ROOT / "js" / "main.js"
+CHROME = Path("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
 
 REQUIRED_SECTIONS = {
     "overview",
@@ -176,15 +177,16 @@ class SiteContractTests(unittest.TestCase):
         self.assertRegex(css, r"\.citation-code\s*\{[^}]*min-width:\s*0")
 
     def test_wide_desktop_hero_title_does_not_overwhelm_the_first_screen(self):
-        chrome = Path("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
-        if not chrome.exists():
+        if not CHROME.exists():
             self.skipTest("Google Chrome is not installed")
 
         probe = """
 <script>
 addEventListener("load", () => {
   const title = document.querySelector(".hero h1");
+  const visual = document.querySelector(".hero__visual");
   document.documentElement.dataset.probeH1Height = String(Math.round(title.getBoundingClientRect().height));
+  document.documentElement.dataset.probeVisualTop = String(Math.round(visual.getBoundingClientRect().top));
 });
 </script>
 """
@@ -196,7 +198,7 @@ addEventListener("load", () => {
                 probe_path.write_text(html, encoding="utf-8")
                 process = subprocess.Popen(
                     [
-                        str(chrome),
+                        str(CHROME),
                         "--headless=new",
                         "--disable-gpu",
                         "--disable-background-networking",
@@ -208,7 +210,7 @@ addEventListener("load", () => {
                         "--no-first-run",
                         "--no-default-browser-check",
                         f"--user-data-dir={profile_dir}",
-                        "--window-size=1512,733",
+                        "--window-size=1350,768",
                         "--dump-dom",
                         probe_path.as_uri(),
                     ],
@@ -226,14 +228,108 @@ addEventListener("load", () => {
                 probe_path.unlink(missing_ok=True)
 
         match = re.search(r'data-probe-h1-height="(\d+)"', output)
+        visual_top = re.search(r'data-probe-visual-top="(\d+)"', output)
         if match is None and process.returncode:
             self.skipTest("Chrome headless layout probe is unavailable in this sandbox")
         self.assertIsNotNone(match, "Chrome layout probe did not report the title height")
+        self.assertIsNotNone(visual_top, "Chrome layout probe did not report the teaser position")
         self.assertLessEqual(
             int(match.group(1)),
-            520,
-            "At 1512px wide, the paper title should not become a nine-line 694px block",
+            340,
+            "At 1350px wide, the paper title should stay within roughly five readable lines",
         )
+        self.assertLessEqual(
+            int(visual_top.group(1)),
+            390,
+            "At 1350px wide, the teaser should begin in the upper half of the first screen",
+        )
+
+    def test_scrolled_results_table_keeps_model_column_above_metric_columns(self):
+        if not CHROME.exists():
+            self.skipTest("Google Chrome is not installed")
+
+        probe = """
+<script>
+addEventListener("load", () => {
+  const scroll = document.querySelector(".table-scroll");
+  document.documentElement.style.scrollBehavior = "auto";
+  scroll.scrollIntoView({behavior: "auto", block: "start"});
+  scroll.scrollLeft = 220;
+  const model = scroll.querySelector("thead th:first-child");
+  const rect = model.getBoundingClientRect();
+  document.documentElement.dataset.probeModelRect = `${Math.round(rect.left)},${Math.round(rect.top)},${Math.round(rect.right)},${Math.round(rect.bottom)},${innerWidth},${innerHeight}`;
+  const topElement = document.elementFromPoint(rect.right - 8, rect.bottom - 12);
+  document.documentElement.dataset.probeModelOwnsEdge = String(model.contains(topElement) || model === topElement);
+  document.documentElement.dataset.probeTopElement = `${topElement?.tagName || "none"}:${topElement?.textContent?.trim() || ""}`;
+});
+</script>
+"""
+        html = self.read_index().replace("</body>", f"{probe}</body>")
+
+        with tempfile.TemporaryDirectory() as profile_dir:
+            probe_path = ROOT / ".table-layout-probe.html"
+            try:
+                probe_path.write_text(html, encoding="utf-8")
+                process = subprocess.Popen(
+                    [
+                        str(CHROME),
+                        "--headless=new",
+                        "--disable-gpu",
+                        "--disable-background-networking",
+                        "--disable-component-update",
+                        "--disable-crash-reporter",
+                        "--disable-logging",
+                        "--disable-breakpad",
+                        "--no-sandbox",
+                        "--no-first-run",
+                        "--no-default-browser-check",
+                        f"--user-data-dir={profile_dir}",
+                        "--window-size=760,900",
+                        "--virtual-time-budget=1000",
+                        "--dump-dom",
+                        probe_path.as_uri(),
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.DEVNULL,
+                    text=True,
+                    start_new_session=True,
+                )
+                try:
+                    output, _ = process.communicate(timeout=8)
+                except subprocess.TimeoutExpired:
+                    os.killpg(process.pid, signal.SIGTERM)
+                    output, _ = process.communicate(timeout=3)
+            finally:
+                probe_path.unlink(missing_ok=True)
+
+        match = re.search(r'data-probe-model-owns-edge="(true|false)"', output)
+        top_element = re.search(r'data-probe-top-element="([^"]*)"', output)
+        model_rect = re.search(r'data-probe-model-rect="([^"]*)"', output)
+        if match is None and process.returncode:
+            self.skipTest("Chrome headless layout probe is unavailable in this sandbox")
+        self.assertIsNotNone(match, "Chrome layout probe did not report the sticky-column owner")
+        self.assertEqual(
+            "true",
+            match.group(1),
+            "Horizontally scrolled metric headers must remain behind the sticky Model column; "
+            f"top element was {top_element.group(1) if top_element else 'unknown'}, "
+            f"rect was {model_rect.group(1) if model_rect else 'unknown'}",
+        )
+
+    def test_qualitative_analysis_has_three_aligned_comparison_cases(self):
+        html = self.read_index()
+        self.assertEqual(
+            3,
+            len(re.findall(r'class="[^"]*qualitative-case(?:\s|\")', html)),
+            "Qualitative analysis should contain exactly three cases",
+        )
+        self.assertEqual(
+            9,
+            len(re.findall(r'class="[^"]*qualitative-panel(?:\s|\")', html)),
+            "Each qualitative case should contain Source, Baseline, and ScreenCoder panels",
+        )
+        for case_number in ("01", "02", "03"):
+            self.assertIn(f'data-case="{case_number}"', html)
 
     def test_interactive_controls_have_accessible_fallbacks(self):
         parser = SiteParser(self.read_index())

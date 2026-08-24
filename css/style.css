@@ -159,8 +159,8 @@ a:hover {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  gap: clamp(2.5rem, 5vw, 5.5rem);
+  grid-template-columns: minmax(0, 1.03fr) minmax(0, 0.97fr);
+  gap: clamp(2.25rem, 4vw, 4rem);
   align-items: center;
   width: min(calc(100% - 3rem), var(--content));
   min-height: calc(100vh - 68px);
@@ -181,10 +181,11 @@ a:hover {
   max-width: 720px;
   margin-bottom: 1.5rem;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.55rem, 5vw, 4rem);
+  font-size: clamp(2.55rem, 3.9vw, 3.35rem);
   font-weight: 500;
   letter-spacing: -0.045em;
   line-height: 1.02;
+  text-wrap: balance;
 }
 
 .hero__summary {
@@ -551,9 +552,11 @@ a:hover {
 }
 
 .table-scroll {
+  position: relative;
   overflow-x: auto;
   border: 1px solid #404967;
   border-radius: var(--radius-sm);
+  isolation: isolate;
 }
 
 table {
@@ -580,13 +583,23 @@ td {
   white-space: nowrap;
 }
 
-th:first-child {
+thead tr:first-child > th:first-child,
+tbody tr > th:first-child {
   position: sticky;
   left: 0;
-  z-index: 1;
   min-width: 185px;
   text-align: left;
   background: var(--dark-soft);
+  box-shadow: 1px 0 0 #4b5577, 14px 0 18px -18px rgba(0, 0, 0, 0.9);
+}
+
+thead tr:first-child > th:first-child {
+  z-index: 4;
+  background: #202842;
+}
+
+tbody tr > th:first-child {
+  z-index: 2;
 }
 
 thead th {
@@ -609,7 +622,7 @@ tbody td {
   font-weight: 750;
 }
 
-.table-highlight th:first-child {
+.table-highlight > th:first-child {
   background: #303c6b;
 }
 
@@ -702,48 +715,100 @@ tbody td {
   color: #fff;
 }
 
-.comparison-grid {
+.qualitative-cases {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
   gap: 1.5rem;
-  align-items: start;
+  width: min(100%, var(--content));
+  margin-inline: auto;
 }
 
-.comparison-card {
-  margin: 0;
-  padding: 0.8rem;
+.qualitative-case {
+  padding: clamp(1rem, 2vw, 1.5rem);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: #fff;
   box-shadow: var(--shadow-sm);
 }
 
-.comparison-card__label {
-  padding: 0.25rem 0.35rem 0.85rem;
+.qualitative-case__heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+  padding-inline: 0.2rem;
 }
 
-.comparison-card__label span {
-  color: var(--ink-soft);
-  font-size: 0.75rem;
+.qualitative-case__heading p,
+.qualitative-case__heading h3 {
+  margin: 0;
+}
+
+.qualitative-case__heading p {
+  color: var(--accent);
+  font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.comparison-card--ours .comparison-card__label span {
-  color: var(--accent);
+.qualitative-case__heading h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  font-weight: 500;
 }
 
-.comparison-card img {
-  width: 100%;
+.qualitative-case__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.qualitative-panel {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+  grid-template-rows: auto 1fr;
+}
+
+.qualitative-panel__media {
+  display: grid;
+  overflow: hidden;
   border: 1px solid #e8eaf2;
   border-radius: var(--radius-sm);
+  aspect-ratio: 16 / 9;
+  place-items: center;
+  background: #f7f8fc;
 }
 
-.comparison-card figcaption {
-  padding: 0.9rem 0.35rem 0.25rem;
+.qualitative-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.qualitative-panel figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0.25rem 0.1rem;
   color: var(--ink-soft);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
+}
+
+.qualitative-panel figcaption strong {
+  color: var(--ink);
+  font-size: 0.8rem;
+}
+
+.qualitative-panel--ours .qualitative-panel__media {
+  border-color: #bcc6ef;
+  box-shadow: inset 0 0 0 1px rgba(78, 96, 189, 0.1);
+}
+
+.qualitative-panel--ours figcaption strong {
+  color: var(--accent-dark);
 }
 
 .citation {
@@ -954,8 +1019,11 @@ tbody td {
   .section-heading--split,
   .failure-grid,
   .human-eval,
-  .comparison-grid,
   .citation {
+    grid-template-columns: 1fr;
+  }
+
+  .qualitative-case__grid {
     grid-template-columns: 1fr;
   }
 
@@ -1019,7 +1087,7 @@ tbody td {
   .hero__visual img,
   .method-figure img,
   .demo-placeholder,
-  .comparison-card {
+  .qualitative-case {
     border-radius: var(--radius-sm);
   }
 }
