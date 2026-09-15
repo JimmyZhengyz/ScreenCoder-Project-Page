@@ -93,7 +93,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("ScreenCoder: Advancing Visual-to-Code Generation", html)
         self.assertIn("Yilei Jiang", html)
         self.assertIn("Yaozhi Zheng", html)
-        self.assertIn("Accepted at EMNLP 2026", html)
+        self.assertIn("Accepted at EMNLP 2026 Main Conference", html)
         self.assertIn("arXiv:2507.22827", html)
         self.assertNotIn("pricing", html.lower())
 
@@ -109,7 +109,7 @@ class SiteContractTests(unittest.TestCase):
     def test_public_source_registry_is_complete(self):
         self.assertTrue(SOURCES.exists(), "sources.json must exist")
         sources = json.loads(SOURCES.read_text(encoding="utf-8"))
-        self.assertEqual("EMNLP 2026", sources["publication"]["venue"])
+        self.assertEqual("EMNLP 2026 Main Conference", sources["publication"]["venue"])
         self.assertEqual("accepted", sources["publication"]["status"])
         self.assertIsNone(sources["publication"]["proceedings_url"])
         self.assertEqual(
@@ -140,7 +140,7 @@ class SiteContractTests(unittest.TestCase):
     def test_bibtex_is_present(self):
         html = self.read_index()
         self.assertIn("@misc{jiang2026screencoder", html)
-        self.assertIn("howpublished = {Accepted at EMNLP 2026}", html)
+        self.assertIn("howpublished = {Accepted at the EMNLP 2026 Main Conference}", html)
         self.assertIn("arXiv:2507.22827", html)
 
     def test_paper_and_code_are_the_primary_hero_resources(self):
