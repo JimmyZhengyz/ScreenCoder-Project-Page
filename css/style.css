@@ -253,7 +253,9 @@ a:hover {
 }
 
 .hero__content {
-  width: min(100%, 1060px);
+  width: 100%;
+  max-width: 1060px;
+  min-width: 0;
   text-align: center;
 }
 

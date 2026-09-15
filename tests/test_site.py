@@ -93,6 +93,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("ScreenCoder: Advancing Visual-to-Code Generation", html)
         self.assertIn("Yilei Jiang", html)
         self.assertIn("Yaozhi Zheng", html)
+        self.assertIn("Accepted at EMNLP 2026", html)
         self.assertIn("arXiv:2507.22827", html)
         self.assertNotIn("pricing", html.lower())
 
@@ -108,6 +109,9 @@ class SiteContractTests(unittest.TestCase):
     def test_public_source_registry_is_complete(self):
         self.assertTrue(SOURCES.exists(), "sources.json must exist")
         sources = json.loads(SOURCES.read_text(encoding="utf-8"))
+        self.assertEqual("EMNLP 2026", sources["publication"]["venue"])
+        self.assertEqual("accepted", sources["publication"]["status"])
+        self.assertIsNone(sources["publication"]["proceedings_url"])
         self.assertEqual(
             {"paper", "code", "demo", "dataset", "hf_paper"},
             set(sources["canonical_sources"]),
@@ -135,7 +139,8 @@ class SiteContractTests(unittest.TestCase):
 
     def test_bibtex_is_present(self):
         html = self.read_index()
-        self.assertIn("@article{jiang2025screencoder", html)
+        self.assertIn("@misc{jiang2026screencoder", html)
+        self.assertIn("howpublished = {Accepted at EMNLP 2026}", html)
         self.assertIn("arXiv:2507.22827", html)
 
     def test_paper_and_code_are_the_primary_hero_resources(self):
@@ -175,6 +180,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn(":focus-visible", css)
         self.assertRegex(css, r"body\s*\{[^}]*overflow-x:\s*clip")
         self.assertRegex(css, r"\.citation-code\s*\{[^}]*min-width:\s*0")
+        self.assertRegex(css, r"\.hero__content\s*\{[^}]*min-width:\s*0")
 
     def test_wide_desktop_hero_places_a_large_teaser_below_the_project_intro(self):
         if not CHROME.exists():

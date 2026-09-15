@@ -1,4 +1,11 @@
 {
+  "publication": {
+    "venue": "EMNLP 2026",
+    "status": "accepted",
+    "confirmed_by": "authors",
+    "confirmed_on": "2026-09-15",
+    "proceedings_url": null
+  },
   "canonical_sources": {
     "paper": {
       "label": "Paper",
